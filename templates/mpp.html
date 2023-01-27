@@ -1,0 +1,23 @@
+
+{% extends 'base.html' %}
+
+{% block body %}
+<body>
+    <h1>My Practice Pal Music Logger</h1>
+        <h2>Sign Up to Practice Smarter!</h2>
+            <form action="/signup">
+                <fieldset>
+                    <label for="signup_email" >Email: 
+                        <input id="signup_email" type="email" required/>
+                    </label>
+                    
+                    <label for="new-password">Password: 
+                        <input id="new-password" type="password" pattern="[a-z0-5]{8, }">
+                    </label>
+                </fieldset>
+                <p>Musicians get better by practicing. Keeping track of practice helps a musician set goals, collect information about skill development, identify strengths and weaknesses, and resume exercises from a prior session. This process of logging information is also helpful for students to keep track of homework and drills assigned by a teacher. 
+                <p>Logging can help students stay motivated despite plateaus by reflecting their hard work and improvement over time. From blank log to thriving tree, students can see their progress within the big picture, making practice time more focused and valuable.</p>
+            </form>
+</body>
+{% endblock %}
+</html>
