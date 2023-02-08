@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Create a Routine - MPP {% endblock %} 
+
+{% block head %}
+{% endblock %}
+
+
+{% block body %}
+
+<h1>Create a Routine</h1>
+    <p>A routine is a group of exercises you'll practice each session. You can make as many routines as you'd like, which is especially useful if you play more than one instrument or if you want to craft new routines for specific goals. My Practice Pal will help you keep track of how many times you have practiced all the parts of your routine. </p>
+
+    <h2>Variations</h2>
+
+        <p>The MPP log tool captures whatever level of detail you decide. When you log a music practice session, MPP will automatically give you the option to input the specific keys and modes you worked on that session, as well as the fastest tempo you could play successfully that session. The log will also automatically offer descriptors for common variations: "forwards", "backwards", or "forwards & backwards." In <span class="emphasize_text">addition</span> to the variation descriptors provided, you can add your own variation descriptions to capture the details you want to keep track of in your own words.
+        </p>
+
+    <form action="/routine" method="post">
+      <div id="exercise-list">
+        <label for="Title">Routine Title</label>
+            <input type="text" placeholder="My First Routine" name="title" id="title">
+        <label for="description">Brief description</label>
+            <input type="text" placeholder="Describe in a sentence or two" name="description" id="description">
+
+        <label for="add_exercise">Add Exercise</label>
+            <input type="text" placeholder="Major Scales" name="exercise" id="exercise">
+        
+      </div>
+      <input type="submit">
+        
+        <button value="Add Exercise to Routine" id="add_exercise"></button>
+    </form>
+
+    <script>
+        const buttonAddsExercise = document.getElementById('add_exercise');
+    
+        // document.querySelector("#add_exercise") === document.getElementById('add_exercise')
+        buttonAddsExercise.addEventListener('click', (evt) =>  {
+            evt.preventDefault();
+            // append a new text input to #exercise-list div using insertAdjacentHTML
+            document.getElementById('exercise-list').insertAdjacentHTML(
+                "beforeend",
+                '<label for="add_exercise">Add Exercise</label><input type="text" placeholder="Major Scales" name="exercise">'
+            );
+        }) 
+    
+    
+    </script>
+{% endblock %}

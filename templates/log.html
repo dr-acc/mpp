@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Log -- My Practice Pal{% endblock %}
+
+{% block head %}{% endblock%}
+
+{% block body %}
+
+    <h1>Practice Log</h1>
+        <p>Build your skills and track your progress!</p>
+        <p>Note the highest tempo at which you could do the drill. If the drill is too fast for you to do (mostly) correctly, slow down to a more comfortable tempo. If you feel completely confident at a tempo, add 3bpm until you reach the edge of your comfort zone.</p>
+        <!--- Insert date ---> 
+        <h2>What did you practice today?</h2>
+            <form action="/log" method = "POST">
+                
+            <fieldset>
+                <p>* = Required</p>
+                <section>
+                    <label for="date">*Practice Date: 
+                        <input type="datetime" name="date" id="date" required/>
+                    </label>
+                </section>
+
+                <section>
+                    <label for="total_session_minutes">*Duration (minutes):</label>
+                        <input type="number" min="1" max="1440" name="session_min" id="session_min" required/>
+                    <label for="on_instrument_min">On Instrument:</label>
+                        <input type="number" min="1" max="1440" name="on_instrument_min" id="on_instrument_min" />
+                    <label for="add_time_off_inst">Off Instrument</label>
+                        <input type="number" min="1" max="1440" name="off_instrument_min" id="off_instrument_min" />
+                    <label for="general_min">Check box if logging time spent, but not routine-specific:</label>
+                        <input type="checkbox" value="general_min_only" id="general_min_check" >
+                </section>
+
+
+                <section>
+                    <label>Select Routine</label>
+                        <select>
+                            <option value="general_min">No Routine - Add General Time Only</option>
+                            <!-- jinja loop: for all the routines saved in the database -->
+                            <!-- This needs to be built into a a function where the routine the user creates populates the options from this select menu. -->
+                        </select>
+                </section>
+
+                <section>
+                    <label for="session_difficulty">How difficult was this practice session?</label>
+                        <select name="session_difficulty">
+                            <option value="">(select)</option>
+                            <option value="easy">Easy Street!</option>
+                            <option value="ok">Ok</option>
+                            <option value="somewhat-challenging">Some challenge</option>
+                            <option value="extremely-difficult">Extreme challenge</option>
+                        </select>
+                </section>
+
+                <section>
+                    <label for="session_enjoyment">How much did you enjoy your practice today?
+                        <select name="session_enjoyment" id="session_enjoyment">
+                            <option value="">(select)</option>
+                            <option value="disliked">disliked</option>
+                            <option value="neutral">neutral</option>
+                            <option value="liked">liked</option>
+                            <option value="loved">loved</option>
+                        </select>
+                    </label>
+                </section>
+
+                <section>
+                    <label for="notes_for_practice">Notes for next practice:
+                        <textarea name="notes_for_practice" id="notes_for_practice" placeholder="Next practice..."></textarea>
+                    </label>
+                </section>
+
+                <section>
+                    <label for="questions_teacher">Questions for teacher:</label>
+                    <textarea id="questions_teacher" placeholder="Ask teacher about..."></textarea>
+                </section>
+            </fieldset>
+
+                <input type="submit" value="Submit" name="submit" id="submit"/>
+                #######has to submit to database##########
+            </form>
+        <div class ="info_card">
+            <!-- I'm going to start making info cards to display data.  -->
+        </div>
+
+<!-- Made this bit of JS thinking I'll need it; or something like it, maybe a jinja version(?) to populate the drop-down list in the form with options; (i.e., to avoid a massive list of <option> tags) -->
+    <script> 
+        const selectBPM = document.getElementById("selectBPM");
+        let bpms;
+            for (let i = 20; i <= 200; i++) {
+                bpmContents += "<option>" + i + "</option>";
+            }
+
+        selectBPM.innerHTML = bmps;
+
+        <select name="bpm" id="bmp"></select>
+    </script>
+
+    <script> 
+        const selectBPM = document.getElementById("selectBPM");
+
+    </script>
+{% endblock %}

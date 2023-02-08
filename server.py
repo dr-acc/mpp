@@ -1,5 +1,6 @@
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, request, flash, session
 import jinja2
+from model import Routine, User, PracticeSession, db
 
 app = Flask(__name__)
 
@@ -20,40 +21,120 @@ app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 
 @app.route("/")
-def index():
+def landing():
     """Return homepage."""
 
-    return render_template("mpp.html")
+    return render_template("landing.html")
 
-@app.route("/signup")
+
+@app.route("/signup", methods=['POST'])
 def signup():
-###add new user to database###
-###here is where to use redirect so flask sends user to routines(/routine)###
-    return redirect("/routine")
+    user_email = request.form.get("signup_email")
+    user_password = request.form.get("signup_password")
 
-@app.route("/routine")
+    if User.query.filter(User.email == user_email).first():
+        flash("Email already in use")
+        return redirect("/")
+
+    new_user = User(email=user_email, password=user_password)
+    db.session.add(new_user)
+    db.session.commit()
+
+    flash("New user created; enter email and password to sign in")
+    return redirect("/")
+
+
+@app.route("/login", methods=['POST'])
+def login():
+    email_input = request.form.get("email_input") 
+    password_input = request.form.get("password_input")
+
+    user = User.query.filter(User.email == email_input).first()
+
+    if user:
+        if user.password == password_input:
+            session["user_id"] = user.user_id
+            flash("Successfully logged in")
+            return render_template("log.html")
+        else:
+            flash("Password does not match email")
+            return redirect("/")
+    
+    else: 
+        flash("Email not found")
+        return redirect("/") 
+
+
+@app.route("/routine", methods=["GET", "POST"])
 def create_routine():
-    """Create a Routine, a grouping of drills to practice.
+    """Create a Routine, a grouping of exercises to practice.
 
     Users signing up will be (re)directed here first.
 
     Existing users will be able to add new routines to distinguish groupings of their drills & exercises"""
+    if request.method == "POST":
 
-    return render_template("logger.html")
-    ### I think going straight to the logging function makes sense here but will want to check-in about it again over time
-    ### So, this would be a "template" because it is getting some info about this individual user and their saved data (I think)
+        new_title = request.form.get("title")
+        new_description = request.form.get("description")
+        new_exercise = request.form.getlist("exercise")
 
-@app.route("/logger")
+        user = User.query.filter(User.user_id == session["user_id"]).first()
+        print(user)
+
+        new_routine = Routine(title=new_title, description=new_description, exercises="|".join(new_exercise), user=user)
+        print(new_routine)
+
+        db.session.add(new_routine)
+        db.session.commit()
+        return redirect("/routine")
+
+
+    return render_template("routines.html")
+
+
+@app.route("/log", methods=["POST"])
 def log_practice_session():
-    """Allow user to log a practice session
+    """Allow user to log a practice session, saving to db.
+
     Form data is partially pre-filled based on their Routine(s)"""
-    return render_template("dashboard.html")
-    ##maybe some kind of flashed message congratulating the user for logging a new session
+
+    date = request.form.get("date")
+
+    session_min = request.form.get("session_minutes")
+    on_instrument_min = request.form.get("on_instrument_min")
+    off_instrument_min = request.form.get("off_instrument_min")
+    
+    # routine = request.form.get("")
+    exercises_this_session = request.form.getlist("exercise")
+    session_difficulty = request.form.get("session_difficulty")
+    session_enjoyment = request.form.get("session_enjoyment")
+    notes_next_practice = request.form.get("notes_for_practice")
+    questions_for_teacher = request.form.get("questions_teacher")
+
+    print(date, session_min, on_instrument_min, off_instrument_min, exercises_this_session, session_difficulty, session_enjoyment, notes_next_practice, questions_for_teacher)
+
+    user = User.query.filter(User.user_id == session["user_id"]).first()
+    ##continue below; 
+    # try to add and commit to database if possible 
+    # new_practice_session = PracticeSession(date=date, total_session_min=total_, exercises="|".join(new_exercise), user=user)
+    # print(new_practice_session)
+
+    # db.session.add(new_practice_session)
+    # db.session.commit()
+    # return redirect("/  ")
+
+    return render_template("log.html")
+
 
 @app.route("/dashboard")
-##from dash there will be navigation home or log
 def show_dash():
-    return render_template("dashboard.html")
-    ###user-specific with <user..>^?
-
     
+    """Display data on page with stats & cool visualizations """
+
+    return render_template("dashboard.html")
+
+
+if __name__ == "__main__":
+    from model import connect_to_db
+    connect_to_db(app)
+    app.run(host="0.0.0.0", debug=True)
