@@ -16,6 +16,11 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 # more useful (you should remove this line in production though)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
+list_of_maj_keys = ["C", "G", "D", "A", "E", "B", "F#", "C#", "F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb"]
+
+
+
+
 
 @app.route("/")
 def landing():
@@ -149,6 +154,7 @@ def log_practice_session():
     # return redirect("/  ")
 
     practice_sessions = last_two_sessions(user.user_id)
+    
 
     return render_template("log.html", user=user, practice_sessions=practice_sessions)
 

@@ -76,7 +76,14 @@
                     
                     <button type="button" class="collapsible">+ Expand to Add Optional Details</button>
                     <div class="content">Select all that apply:
-                        <p>Keys</p>
+                        <p>Keys:   
+                            <ul>
+                                {% for key in list_of_maj_keys %}  
+                                <li><input type="checkbox" value="{{ key }}" name="{{ key }}" class="music_key_checkboxes" id="{{ key }}">{{ key }}</input></li>
+                                {% endfor %} 
+                            </ul>
+                        </p>
+                        
                         <p>Modes</p>
                         <p>BPM</p>
                         <p>Direction</p>

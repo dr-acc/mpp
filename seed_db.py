@@ -36,8 +36,9 @@ exercise5 = Exercise(ex_title="Broken Sixths", routine=routine2)
 exercise6 = Exercise(ex_title="Subtraction", routine=routine2)
 exercise7 = Exercise(ex_title="Major Scales All Strings", routine=routine2)
 exercise8 = Exercise(ex_title="Six Variations", routine=routine2) 
+exercise9 = Exercise(ex_title="Shh", routine=routine3)
 
-db.session.add_all([exercise1, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, exercise8])
+db.session.add_all([exercise1, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, exercise8, exercise9])
 db.session.commit()
 
 practice_session = PracticeSession(date="01-01-2023", total_session_min=60, user=user, routine=routine1)
