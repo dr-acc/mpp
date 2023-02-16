@@ -13,38 +13,26 @@
 
     <h2>Variations</h2>
 
-        <p>The MPP log tool captures whatever level of detail you decide. When you log a music practice session, MPP will automatically give you the option to input the specific keys and modes you worked on that session, as well as the fastest tempo you could play successfully that session. The log will also automatically offer descriptors for common variations: "forwards", "backwards", or "forwards & backwards." In <span class="emphasize_text">addition</span> to the variation descriptors provided, you can add your own variation descriptions to capture the details you want to keep track of in your own words.
+        <p>The MPP log tool captures whatever level of detail you decide. When you log a music practice session, MPP will automatically give you the option to input the specific keys and modes you worked on that session, as well as the fastest tempo you could play successfully that session. The log will also automatically offer descriptors for common directional variations: "forwards", "backwards", or "forwards & backwards." In <span class="emphasize_text">addition</span> to the variation descriptors provided, you can add your own variation descriptions to capture the details you want to keep track of in your own words.
         </p>
 
     <form action="/routine" method="post">
-      <div id="exercise-list">
-        <label for="Title">Routine Title</label>
-            <input type="text" placeholder="My First Routine" name="title" id="title">
-        <label for="description">Brief description</label>
-            <input type="text" placeholder="Describe in a sentence or two" name="description" id="description">
+        <div id="exercise-list">
+            <label for="Title">Routine Title</label>
+                <input type="text" placeholder="My First Routine" name="title" id="title">
+            <label for="description">Brief description</label>
+                <input type="text" placeholder="Describe in a sentence or two" name="description" id="description">
 
-        <label for="add_exercise">Add Exercise</label>
-            <input type="text" placeholder="Major Scales" name="exercise" id="exercise">
+            <label for="add_exercise">Add Exercise</label>
+                <input type="text" placeholder="Major Scales" name="exercise" id="exercise">
+            <label for="add_variation">Add Variation</label>
+                <input type="text" placeholder="Slap Style" name="exercise" id="my-variation">
         
-      </div>
-      <input type="submit">
+        </div>
+        <input type="submit" >
         
         <button value="Add Exercise to Routine" id="add_exercise"></button>
     </form>
 
-    <script>
-        const buttonAddsExercise = document.getElementById('add_exercise');
     
-        // document.querySelector("#add_exercise") === document.getElementById('add_exercise')
-        buttonAddsExercise.addEventListener('click', (evt) =>  {
-            evt.preventDefault();
-            // append a new text input to #exercise-list div using insertAdjacentHTML
-            document.getElementById('exercise-list').insertAdjacentHTML(
-                "beforeend",
-                '<label for="add_exercise">Add Exercise</label><input type="text" placeholder="Major Scales" name="exercise">'
-            );
-        }) 
-    
-    
-    </script>
 {% endblock %}

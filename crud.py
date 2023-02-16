@@ -1,6 +1,6 @@
 """CRUD operations (CREATE READ UPDATE DELETE)"""
 
-from model import db, connect_to_dbUser, Routine, User, Exercise
+from model import db, connect_to_db, User, Routine, User, Exercise, PracticeSession
 ###How to get db imports to show up?^^
 
 
@@ -47,7 +47,7 @@ def create_routine(routine_id, title, description, exercises):
 def get_routines():
     """Return all routines."""
 
-    return Routines.query.all()
+    return Routine.query.all()
 
 
 def create_exercise(user, routine, exercise):
@@ -56,6 +56,11 @@ def create_exercise(user, routine, exercise):
     exercise = Exercise(user=user, routine=routine, exercise=exercise)
 
     return exercise
+
+def last_two_sessions(user_id):
+    """Return the 2 most recent PracticeSessions of the user"""
+
+    return PracticeSession.query.filter_by(user_id=user_id).order_by(PracticeSession.session_id.desc()).limit(2).all()
 
 
 # def update_routine():

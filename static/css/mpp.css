@@ -7,3 +7,24 @@ form    {
 }
 
 
+.collapsible    {
+    background-color: goldenrod;
+    color: rgb(10, 85, 85);
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    outline:none;
+    font-size: medium;
+}
+
+.active, .collapsible:hover {
+    background-color: rgb(241, 155, 155);
+}
+
+.content    {
+    padding: o 10px;
+    background-color: cornflowerblue;
+    display: none;
+    overflow: hidden;
+}

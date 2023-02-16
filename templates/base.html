@@ -23,4 +23,31 @@
       {% endfor %}
   {% endwith %}
     </div>
+
+    {% block js %}
+    <script>
+        const buttonAddsExercise = document.getElementById('add_exercise');
+    
+        // document.querySelector("#add_exercise") === document.getElementById('add_exercise')
+        buttonAddsExercise.addEventListener('click', (evt) =>  {
+            evt.preventDefault();
+            // append a new text input to #exercise-list div using insertAdjacentHTML
+            document.getElementById('exercise-list').insertAdjacentHTML(
+                "beforeend",
+                '<label for="add_exercise">Add Exercise</label><input type="text" placeholder="Major Scales" name="exercise">'
+            );
+        }) 
+
+        buttonAddsMyVariations.addEventListener('click', (evt) =>  {
+            evt.preventDefault();
+            // append a new text input to #exercise-list div using insertAdjacentHTML
+            document.getElementById('my-variation').insertAdjacentHTML(
+                "beforeend",
+                '<label for="add_variation">Add Variation</label><input type="text" placeholder="Slap Style" name="add_variation">'
+            );
+        }) 
+    
+    
+    </script>
+    {% endblock %}
 </html>

@@ -29,7 +29,8 @@ class Routine(db.Model):
     routine_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     title = db.Column(db.String) ###this will come from form
     description = db.Column(db.Text) ### form text field data
-    exercises = db.Column(db.String) 
+
+    exercises = db.relationship("Exercise", back_populates="routine")
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     user = db.relationship("User", back_populates="routines")
@@ -48,7 +49,6 @@ class PracticeSession(db.Model):
     
     session_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     date = db.Column(db.DateTime)
-    exercises_this_session = db.Column(db.String, nullable=True)
     total_session_min = db.Column(db.Integer)
     on_instrument_min = db.Column(db.Integer, nullable=True)
     off_instrument_min = db.Column(db.Integer, nullable=True)
@@ -56,9 +56,10 @@ class PracticeSession(db.Model):
     session_enjoyment_level = db.Column(db.String, nullable=True)
     notes_next_practice = db.Column(db.String, nullable=True)
     questions_for_teacher = db.Column(db.String, nullable=True)
+    exercises_this_session = db.Column(db.String, nullable=True)
+
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-
     user = db.relationship("User", back_populates="practice_sessions")  
 
     routine_id = db.Column(db.Integer, db.ForeignKey("routines.routine_id"))
@@ -66,30 +67,33 @@ class PracticeSession(db.Model):
 
 
     def __repr__(self):
-        return f"<PracticeSession {self.practice_session_id} Date: {self.date} Exercises: {self.exercises_this_session}>"
+        return f"<PracticeSession {self.session_id} Date: {self.date} Exercises: {self.exercises_this_session}>"
 
 
-# class Exercise(db.Model):
-#     __tablename__ = "exercises"
+class Exercise(db.Model):
+    __tablename__ = "exercises"
 
-#     exercise_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     ex_title = db.Column(db.String)
+    exercise_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    ex_title = db.Column(db.String)
+    key_variations = db.Column(db.String, nullable=True)
+    mode_variations = db.Column(db.String, nullable=True)
+    direction_variations = db.Column(db.String, nullable=True)
+    my_variations = db.Column(db.String, nullable=True)
 
-    # practice_date = 
-    # def __repr__(self):
-    #     return f"<Exercise {self.ex_title}>"
-        ###simple repr for session id number and date
+    # dates_practiced = db.relationship("PracticeSession(s?)", back_populates="exercise")
+    routine_id = db.Column(db.Integer, db.ForeignKey("routines.routine_id"))
+    routine = db.relationship("Routine", back_populates="exercises")
 
-    # exercises_in_routine = db.relationship("Exercises", back_populates="routines")
-    ###^am I doing that right and do I need one for users too?###
+    def __repr__(self):
+        return f"<Exercise {self.ex_title}>"
 
 
-###can change "echo", below, to True if you want to see a much more verbose readout
+
 def connect_to_db(flask_app, db_uri="postgresql:///mpp", echo=False): 
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+    ###can change "echo" to True if you want to see a much more verbose readout
     db.app = flask_app
     db.init_app(flask_app)
 
