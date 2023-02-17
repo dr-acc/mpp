@@ -17,6 +17,8 @@ class User(db.Model):
     routines = db.relationship("Routine", back_populates="user")
     practice_sessions = db.relationship("PracticeSession", back_populates="user")
 
+    exercises = db.relationship("Exercise", back_populates="user")
+
     def __repr__(self):
         return f"<User user_id={self.user_id} email={self.email}>"
 
@@ -36,6 +38,7 @@ class Routine(db.Model): ###A menu (lunch vs dinner)
     user = db.relationship("User", back_populates="routines")
 
     practice_sessions = db.relationship("PracticeSession", back_populates="routine")
+    
     
 
     def __repr__(self):
@@ -84,6 +87,9 @@ class Exercise(db.Model): ###the menu items ordered -- "Attributes" problem = al
     # dates_practiced = db.relationship("PracticeSession(s?)", back_populates="exercise")
     routine_id = db.Column(db.Integer, db.ForeignKey("routines.routine_id"))
     routine = db.relationship("Routine", back_populates="exercises")
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    user = db.relationship("User", back_populates="exercises")
 
     def __repr__(self):
         return f"<Exercise {self.ex_title}>"
