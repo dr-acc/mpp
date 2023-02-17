@@ -1,8 +1,11 @@
 "use strict"
 
-const routine = document.querySelector("#routine")
+const routine = document.querySelector("#select_routine")
 
-routine.addEventListener("click", () => {
+routine.addEventListener("change", () => {
     const routine_id = routine.value 
-    document.querySelector(`#${routine_id}`).hidden = false;
+    document.querySelector(`#routine-${routine_id}`).hidden = false;
 })
+
+
+

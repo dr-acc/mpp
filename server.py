@@ -17,7 +17,8 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 list_of_maj_keys = ["C", "G", "D", "A", "E", "B", "F#", "C#", "F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb"]
-
+mode_library = ["I Ionian", "II Dorian", "III Phrygian", "IV Lydian", "V Mixolydian", "VI Aeolean", "VII Locrian"]
+direction_variations = ["Forwards", "Backwards", "Forwards & Back", "Backwards & Forward", "Ascending", "Descending"]
 
 
 
@@ -58,7 +59,7 @@ def login():
         if user.password == password_input:
             session["user_id"] = user.user_id
             flash("Successfully logged in")
-            return render_template("log.html", user=user, practice_sessions=practice_sessions)
+            return render_template("log.html", user=user, practice_sessions=practice_sessions, list_of_maj_keys=list_of_maj_keys, mode_library=mode_library)
         else:
             flash("Password does not match email")
             return redirect("/")
@@ -102,7 +103,6 @@ def create_routine():
         ###
 
         return redirect("/routine")
-
 
     return render_template("routines.html")
 
@@ -156,7 +156,7 @@ def log_practice_session():
     practice_sessions = last_two_sessions(user.user_id)
     
 
-    return render_template("log.html", user=user, practice_sessions=practice_sessions)
+    return render_template("log.html", user=user, practice_sessions=practice_sessions, list_of_maj_keys=list_of_maj_keys, mode_library = mode_library)
 
 
 @app.route("/dashboard")
@@ -164,7 +164,9 @@ def show_dash():
     
     """Display data on page with stats & cool visualizations """
 
-    return render_template("dashboard.html")
+    user = User.query.filter_by(user_id=session["user_id"]).first()
+
+    return render_template("dashboard.html", user=user)
 
 
 if __name__ == "__main__":

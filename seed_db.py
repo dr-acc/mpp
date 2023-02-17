@@ -20,13 +20,14 @@ db.session.refresh(user)
 
 routine1 = Routine(title="Patterns", description="A Routine to track progress in Pattern System", user=user)
 routine2 = Routine(title="Finger Exercises", description="Drills to play at 120bpm one day", user=user)
-routine3 = Routine(title="Harmonium Jams", description="Songs to play with Ann J & friends", user=user)
+routine3 = Routine(title="Harmonium Jams", description="Songs to play with Ann & friends", user=user)
 
-db.session.add_all([routine1, routine2])
+db.session.add_all([routine1, routine2, routine3])
 db.session.commit()
 
 db.session.refresh(routine1)
 db.session.refresh(routine2)
+db.session.refresh(routine3)
 
 exercise1 = Exercise(ex_title="Charting Open Area", routine=routine1)
 exercise2 = Exercise(ex_title="Workbook", routine=routine1)

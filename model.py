@@ -21,7 +21,7 @@ class User(db.Model):
         return f"<User user_id={self.user_id} email={self.email}>"
 
 
-class Routine(db.Model):
+class Routine(db.Model): ###A menu (lunch vs dinner)
     """A user-created grouping of skills and exercises to practice regularly."""
 
     __tablename__ = "routines"
@@ -42,7 +42,7 @@ class Routine(db.Model):
         return f"<Routine routine_id={self.routine_id} title={self.title}>"
 
 
-class PracticeSession(db.Model):
+class PracticeSession(db.Model):  ###A specific meal order
     """A single log entry representing a user's practice session."""
 
     __tablename__ = "practice_sessions"
@@ -70,11 +70,12 @@ class PracticeSession(db.Model):
         return f"<PracticeSession {self.session_id} Date: {self.date} Exercises: {self.exercises_this_session}>"
 
 
-class Exercise(db.Model):
+class Exercise(db.Model): ###the menu items ordered -- "Attributes" problem = all the details about how they are ordered
     __tablename__ = "exercises"
 
     exercise_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     ex_title = db.Column(db.String)
+    bpm = db.Column(db.Integer, nullable=True)
     key_variations = db.Column(db.String, nullable=True)
     mode_variations = db.Column(db.String, nullable=True)
     direction_variations = db.Column(db.String, nullable=True)

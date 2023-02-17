@@ -43,7 +43,7 @@
                             <option value="0" id="routine">--</option>
                             {% for routine in user.routines %}
 
-                            <option value="{{ routine.routine_id }}" id="routine">{{ routine.title }}</option>
+                            <option value="{{ routine.routine_id }}" id="">{{ routine.title }}</option>
                             
                             {% endfor %}
 
@@ -56,7 +56,7 @@
 
                 {% for routine in user.routines %}
 
-                <section id="{{ routine.routine_id }}" hidden>
+                <section id="routine-{{ routine.routine_id }}" hidden>
                     <h4>Choose the exercises you did in your {{ routine.title }} routine</h4>
 
                     {% for exercise in routine.exercises %}
@@ -84,7 +84,13 @@
                             </ul>
                         </p>
                         
-                        <p>Modes</p>
+                        <p>Modes
+                            <ul>
+                                {% for mode in mode_library %}  
+                                <li><input type="checkbox" value="{{ mode }}" name="{{ mode }}" class="music_mode_checkboxes" id="{{ mode }}">{{ mode }}</input></li>
+                                {% endfor %} 
+                            </ul>
+                        </p>
                         <p>BPM</p>
                         <p>Direction</p>
                         <p>My Variations</p>
