@@ -1,96 +1,64 @@
 {% extends 'base.html' %}
-
 {% block title %}Log -- My Practice Pal{% endblock %}
-
-{% block head %}{% endblock %}
 
 {% block body %}
 
-    <h1>Practice Log</h1>
-        <p>Build your skills and track your progress!</p>
-        <p>Note the highest tempo at which you could do the drill. If the drill is too fast for you to do (mostly) correctly, slow down to a more comfortable tempo. If you feel completely confident at a tempo, add 3bpm until you reach the edge of your comfort zone.</p>
-        <!--- Insert date ---> 
-        <h2>What did you practice today?</h2>
 
+<div class="container row d-flex justify-content-center"">
+    <div class="col-md-8 col-xs-12">
+        <h1>Practice Log 🪵</h1><br>
+        <h3>What did you practice today in your {{ routine.title }} routine? </h3>
 
-
-            <form action="/log" method = "POST">
+        <form action="/log" method = "POST">
                 
             <fieldset>
-                <p>* = Required</p>
                 <section>
-                    <label for="date">*Practice Date: 
+                    <label for="date">*Practice Date:</label>
                         <input type="datetime" name="date" id="date" required/>
-                    </label>
-                </section>
-
-                <section>
                     <label for="total_session_minutes">*Duration (minutes):</label>
                         <input type="number" min="1" max="1440" name="session_minutes" id="session_min" required/>
+                    <p class="small_text">* Required</p>
+                </section>
+
+                <section>
                     <label for="on_instrument_min">On Instrument:</label>
-                        <input type="number" min="1" max="1440" name="on_instrument_min" id="on_instrument_min" required/>
+                        <input type="number" min="1" max="1440" name="on_instrument_min" id="on_instrument_min" />
                     <label for="add_time_off_inst">Off Instrument</label>
-                        <input type="number" min="1" max="1440" name="off_instrument_min" id="off_instrument_min" required/>
-                    <label for="general_min">Check box if logging time spent, but not routine-specific:</label>
-                        <input type="checkbox" value="general_min_only" id="general_min_check" >
+                        <input type="number" min="1" max="1440" name="off_instrument_min" id="off_instrument_min" />
+                    <label for="general_min">Check box if logging time only, not exercises:</label>
+                        <input type="checkbox" value="general_min_only" id="general_min_check">
                 </section>
+                <br>
+            <p>
+                <input name="routine_id" value="{{ routine.routine_id }}" hidden/>
+                    <h3>Choose the exercises you did in your {{ routine.title }} routine:</h3><br>
 
-
-                <section>
-                    <label for="select_routine">Select Routine</label>
-                        <select name="select_routine" id="select_routine">
-
-                            <option value="0" id="routine">--</option>
-                            {% for routine in user.routines %}
-
-                            <option value="{{ routine.routine_id }}" id="">{{ routine.title }}</option>
-                            
-                            {% endfor %}
-
-                            <!-- <option value="general_min">No Routine - Add General Time Only</option> -->
-
-                            <!-- jinja loop: for all the routines saved in the database -->
-                            <!-- This needs to be built into a a function where the routine the user creates populates the options from this select menu. -->
-                        </select>
-                </section>
-
-                {% for routine in user.routines %}
-
-                <section id="routine-{{ routine.routine_id }}" hidden>
-                    <h4>Choose the exercises you did in your {{ routine.title }} routine</h4>
-
-                    {% for exercise in routine.exercises %}
-                        
-                        <input type="checkbox" name="exercise" value="{{ exercise.ex_title }}">{{ exercise.ex_title }}</input>
-                      
-                    {% endfor %}
-
-                </section>
-
-                {% endfor %}
-
-                <section>
-                    <label for="select_exercise">Which exercises did you practice this session?</label>
-                        <!-- <input type="checkbox" name="">
-                        #This will need to populate with exercises from the routine user selects above -->
                     
-                    <button type="button" class="collapsible">+ Expand to Add Optional Details</button>
-                    <div class="content">Select all that apply:
-                        <p>Keys:   
-                            <ul>
-                                {% for key in list_of_maj_keys %}  
-                                <li><input type="checkbox" value="{{ key }}" name="{{ key }}" class="music_key_checkboxes" id="{{ key }}">{{ key }}</input></li>
-                                {% endfor %} 
-                            </ul>
-                        </p>
+                    {% for exercise in routine.exercises.split("|") %}
+                        <input type="checkbox" name="exercise" value="{{ exercise }}">&nbsp;EXERCISE:&nbsp;{{ exercise }}</input><br>
+
                         
-                        <p>Modes
-                            <ul>
+                        <span class="indent"><label for="key_variation">Keys Practiced</label></span><br>
+                        <span class="indent">{% for key in list_of_maj_keys %} 
+                        <input type="checkbox" name="key_variation" value="{{ key }}|{{ exercise }}"><span class="larger_text">&nbsp;{{ key }}&nbsp;</span></input>
+                        {% endfor %}
+                        </span>
+                        <br>
+                        
+                        
+                        <span class="indent">Modes Practiced</span><br>
+                        <span class="indent">
                                 {% for mode in mode_library %}  
-                                <li><input type="checkbox" value="{{ mode }}" name="{{ mode }}" class="music_mode_checkboxes" id="{{ mode }}">{{ mode }}</input></li>
+                                <input type="checkbox" value="{{ mode }}|{{ exercise }}" name="mode" class="music_mode_checkboxes" id="{{ mode }}">&nbsp;{{ mode }}&nbsp;</input>
                                 {% endfor %} 
-                            </ul>
-                        </p>
+                            <br><br>
+                    {% endfor %}
+                        </span>
+                </section>
+                <br>
+            </p>
+                <section>
+                <div class="content">Select all that apply:
                         <p>BPM</p>
                         <p>Direction</p>
                         <p>My Variations</p>
@@ -117,7 +85,7 @@
                             <option value="somewhat-challenging">Some challenge</option>
                             <option value="extremely-difficult">Extreme challenge</option>
                         </select>
-                </section>
+                </section><br>
 
                 <section>
                     <label for="session_enjoyment">How much did you enjoy your practice today?
@@ -129,7 +97,7 @@
                             <option value="loved">loved</option>
                         </select>
                     </label>
-                </section>
+                </section><br>
 
                 <section>
                     <label for="notes_for_practice">Notes for next practice:
@@ -141,64 +109,51 @@
                     <label for="questions_teacher">Questions for teacher:</label>
                     <textarea id="questions_teacher" placeholder="Ask teacher about..."></textarea>
                 </section>
+                <br>
             </fieldset>
-                <label for="submit">Save Practice Session to My Log</label>
+                <label for="submit">Save Practice Session to My Log:</label>
                 <input type="submit" value="Submit" name="submit" id="submit"/>
-            </form>
+        </form>
+        <br><br>
+    </div>
 
-            <div>
-                {% for session in practice_sessions %} 
+    <div class="col-md-4 col-xs-12 squish_down">
+        <h2>About Tracking:<br> Tempo, Key, Mode, & Mood</h2>
+        <p>🏆 My Practice Pal can help coach you to greatness&nbsp;🏆</p> 
+            <ul class="collapsible">+ 💡 Tips: </ul>
+                <li>👀 See your progress: add details, like key and mode, for exercises you want to master 💯 </li>
+                <li>⏲ Tempo: Each time you log a session, include the highest tempo you reached for an exercise (aim for complete and correct but also, challenging)</li>
+                <li>😑 Bored? Speed it up. Frustrated? Good sign. It means you're trying!</li>
+                <li>😩 Not progressing over time? Slow down and build your tempo and confidence slowly, adding 2 or 3 bpm as you build skill. 🐢</li>
+                <li>⏭ Can you skip the details? Sure! Sometimes you won't want to log details (e.g., you don't plan to practice that ballad at 200 bpm).</li>
+    </div>
 
-                <h1>Session from: {{ session.date }}</h1>
 
-                <h4>Exercises this session:</h4>
 
-                    {% if session.exercises_this_session %} 
+    <div class="row">
+        <h1>Recently Logged Practice Sessions</h1>
 
-                        {% for exercise in session.exercises_this_session.split("|") %}
-                        
-                        <p>{{ exercise }}</p>
-                        
-                        {% endfor %}
+        {% for session in practice_sessions %} 
 
-                    {% else %}
+        <h2>Session from: {{ session.date }}</h2>
 
-                        <p>No exercises</p>
+        <h4>Exercises this session:</h4>
 
-                    {% endif %} 
+            {% if session.exercises_this_session %} 
 
+                {% for exercise in session.exercises_this_session.split("|") %}
+                
+                <p>{{ exercise }}</p>
+                
                 {% endfor %}
-            </div>
 
-        <h2>Here's what it looks like when taken out from the form:</h2>
-            <button type="button" class="collapsible">+ Expand to Add Optional Details</button>
-            <div class="content">
-                <p>Select all that apply:
-                    text text text </p>
-                    <p>text text </p>
-                </p>
-                <p>Keys</p>
-                <p>Modes</p>
-                <p>BPM</p>
-                <p>Direction</p>
-                <p>My Variations</p>
-                <p>Difficulty Rating</p>
-                <label for="exercise_difficulty">How difficult does this exercise feel?</label>
-                    <select name="session_difficulty">
-                        <option value="">(select)</option>
-                        <option value="easy">Easy Street!</option>
-                        <option value="ok">Ok</option>
-                        <option value="somewhat-challenging">Some challenge</option>
-                        <option value="extremely-difficult">Extreme challenge</option>
-                    </select>
-            </div>
+            {% else %}
 
-        <div class ="info_card" id="last_session" >
-            <!-- I'm going to start making info cards to display data.  -->
-        </div>
+                <p>No exercises</p>
 
-    {% block js %}
-        <script src="/static/js/log.js"></script>
-    {% endblock %} 
+            {% endif %} 
 
-    {% endblock %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

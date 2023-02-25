@@ -14,9 +14,9 @@ class User(db.Model):
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     email = db.Column(db.String, unique=True)
     password = db.Column(db.String)
+
     routines = db.relationship("Routine", back_populates="user")
     practice_sessions = db.relationship("PracticeSession", back_populates="user")
-
     exercises = db.relationship("Exercise", back_populates="user")
 
     def __repr__(self):
@@ -32,14 +32,12 @@ class Routine(db.Model): ###A menu (lunch vs dinner)
     title = db.Column(db.String) ###this will come from form
     description = db.Column(db.Text) ### form text field data
 
-    exercises = db.relationship("Exercise", back_populates="routine")
+    exercises = db.Column(db.String, nullable=True)
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     user = db.relationship("User", back_populates="routines")
 
-    practice_sessions = db.relationship("PracticeSession", back_populates="routine")
-    
-    
+    # practice_sessions = db.relationship("PracticeSession", back_populates="routine")
 
     def __repr__(self):
         return f"<Routine routine_id={self.routine_id} title={self.title}>"
@@ -59,15 +57,14 @@ class PracticeSession(db.Model):  ###A specific meal order
     session_enjoyment_level = db.Column(db.String, nullable=True)
     notes_next_practice = db.Column(db.String, nullable=True)
     questions_for_teacher = db.Column(db.String, nullable=True)
-    exercises_this_session = db.Column(db.String, nullable=True)
-
+    exercises_this_session = db.relationship("Exercise", back_populates="practice_session")  
+    # exercises_this_session = db.Column(db.String, nullable=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     user = db.relationship("User", back_populates="practice_sessions")  
 
-    routine_id = db.Column(db.Integer, db.ForeignKey("routines.routine_id"))
-    routine = db.relationship("Routine", back_populates="practice_sessions")
-
+    # routine_id = db.Column(db.Integer, db.ForeignKey("routines.routine_id"))
+    # routine = db.relationship("Routine", back_populates="practice_sessions")
 
     def __repr__(self):
         return f"<PracticeSession {self.session_id} Date: {self.date} Exercises: {self.exercises_this_session}>"
@@ -84,9 +81,8 @@ class Exercise(db.Model): ###the menu items ordered -- "Attributes" problem = al
     direction_variations = db.Column(db.String, nullable=True)
     my_variations = db.Column(db.String, nullable=True)
 
-    # dates_practiced = db.relationship("PracticeSession(s?)", back_populates="exercise")
-    routine_id = db.Column(db.Integer, db.ForeignKey("routines.routine_id"))
-    routine = db.relationship("Routine", back_populates="exercises")
+    p_session_id = db.Column(db.Integer, db.ForeignKey("practice_sessions.session_id"))
+    practice_session = db.relationship("PracticeSession", back_populates="exercises_this_session")
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     user = db.relationship("User", back_populates="exercises")

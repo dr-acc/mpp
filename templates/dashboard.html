@@ -1,13 +1,46 @@
 {% extends 'base.html' %} 
 
-{% block title %}User Dashboard
-{% endblock %}
+{% block title %}User Dashboard{% endblock %}
 
 {% block body %}
+<div class="container ">
 
-<h1>Greetings, User</h1>
+    <div class="row d-flex justify-content-center">
+        <div class col-md-3 col-xs-12>
+            <h1 >Greetings, {{user.email}} !</h1><br>
+        </div>
+    </div>
 
-<a type="button" href="/routine">Create a Routine</a>
-<a type="button" href="/log">Log a Practice Session</a>
+    <div class="row">
+    <div class="col-md-9 col-xs-12">
+    <h4>Log a new practice session:</h4>
 
+        <form action="/log-init" method="post">
+
+            <label for="select_routine">Which Routine did you practice?</label>
+
+                <select name="select_routine" id="select_routine">
+                    <option value="0" id="routine">--</option>
+
+                    {% for routine in user.routines %}
+
+                    <option value="{{ routine.routine_id }}" id=" ">{{ routine.title }}</option>
+                    
+                    {% endfor %}
+
+                </select>
+
+                <input type="submit" >
+        </form>
+    </div>
+    </div>
+</div>
 {% endblock %}
+
+
+<!-- Notes for d3
+A common workflow pattern is to create a new element in the document for each piece of data in the set. D3 has the enter() method for this purpose.
+
+When enter() is combined with the data() method, it looks at the selected elements from the page and compares them to the number of data items in the set. If there are fewer elements than data items, it creates the missing elements.
+
+Here is an example that selects a ul element and creates a new list item based on the number of entries in the array: -->

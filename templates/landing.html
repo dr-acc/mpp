@@ -3,50 +3,56 @@
 
 {% block title %}MPP Music Logger{% endblock %}
 
-{% block head %}{% endblock %}
-
-
 {% block body %}
+<div class="container d-flex justify-content-center">
+    <div class="col-md-8 col-xs-11">
+<h1>My Practice Pal Music Logger</h1>
 
-    <h1>My Practice Pal Music Logger</h1>
-
-        <p>Musicians get better by practicing -- there is no substitute for sheer time spent intentionally focused on learning to play! But maybe you have noticed that  practice sessions tend to feel stagnant and it is hard to know if your work is paying off. My Practice Pal is your nerdy coach, keeping track of your exercises and drills, and helping you gain insights into your own journey to musical mastery. 
-            <ul>
-                <li>play better</li>
-                <li>get the most out of practice time</li>
-                <li>maintain continuity ("pick up where you left off")</li>
-                <li>keep track of homework</li>
-                <li>boldly taverse learner plataeus</li>
-
-                <li>learn more <a href="/about.html">about yourself as a learner</a></li>
-                <br>
-
-
-        <h2>Sign Up, Practice Smarter </h2>  
+    <p>Musicians get better by practicing -- there is no substitute for sheer time spent intentionally focused on learning to play! But maybe you have noticed that practice sessions can feel stagnant and it is hard to know if your work is paying off. My Practice Pal is your nerdy coach, keeping track of your exercises and drills, and helping you gain insights into your own journey to musical mastery. 
+        <ul class="plain_list">
+            <li>🪗&nbsp; play better</li>
+            <li>⏳&nbsp; get the most out of practice time</li>
+            <li>🗺&nbsp; maintain continuity ("pick up where you left off")</li>
+            <li>✏️&nbsp; keep track of homework</li>
+            <li>🎢&nbsp; have more fun</li>
+        </ul><br>
+        
+        
+        <h2>Sign Up, Practice Smarter 🧠 </h2>  
         <form action="/signup" method="POST">
-                <fieldset>
-                    <label for="signup_email" >Email: 
-                        <input name="signup_email" id="signup_email" type="email" required/>
-                    </label>
-                    
-                    <label for="signup_password">Password: 
-                        <input name="signup_password" id="signup_password" type="password" pattern="[a-z0-5]{8, }">
-                    </label>
-                </fieldset>
+            <fieldset>
+                <label for="signup_email" >Email: 
+                    <input name="signup_email" id="signup_email" type="email" required/>
+                </label>
+                
+                <label for="signup_password">Password: 
+                    <input name="signup_password" id="signup_password" type="password" pattern="[a-z0-5]{8, }">
+                </label>
                 <input type="submit" value="Submit" name="submit" id="submit"/>
-            </form>
 
-            <h2>Sign In To Log Your Practice Sessions</h2>
-            <form action="/login" method="POST">
-                <fieldset>
-                    <label for="email_input" >Email: 
-                        <input name="email_input" id="email_input" type="email" required/>
-                    </label>
-                    
-                    <label for="password_input">Password: 
-                        <input name="password_input" id="password_input" type="password">
-                    </label>
-                </fieldset>
-                <input type="submit" value="Submit" name="submit" id="submit"/>
-            </form>
-{% endblock %}
+            </fieldset>
+
+        </form>
+        <br>
+        <p>Already signed up? ↙️</p>
+        <h2>Login:</h2>
+        <form action="/login" method="POST">
+            <fieldset>
+                <label for="email_input" >Email:&nbsp;
+                    <input name="email_input" id="email_input" type="email" required/>&nbsp;
+                </label>
+                
+                <label for="password_input">&nbsp;Password:&nbsp;
+                    <input name="password_input" id="password_input" type="password">
+                </label>
+            <input type="submit" value="Submit" name="submit" id="submit"/>
+        </fieldset>
+        </form>
+    </div>
+
+
+    <div col-md-12 col-xs-12>
+
+    </div>
+        {% endblock %}
+</div>
