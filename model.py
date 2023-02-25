@@ -1,5 +1,16 @@
 """Models for music practice logger app."""
 
+
+<script>
+  export default {
+    data() {
+      return {
+        value: ''
+      }
+    }
+  }
+</script>
+
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
