@@ -1,16 +1,6 @@
 """Models for music practice logger app."""
 
 
-<script>
-  export default {
-    data() {
-      return {
-        value: ''
-      }
-    }
-  }
-</script>
-
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
@@ -60,7 +50,7 @@ class PracticeSession(db.Model):  ###A specific meal order
     __tablename__ = "practice_sessions"
     
     session_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    date = db.Column(db.DateTime)
+    date = db.Column(db.DateTime(), default=datetime.now, nullable=False)
     total_session_min = db.Column(db.Integer)
     on_instrument_min = db.Column(db.Integer, nullable=True)
     off_instrument_min = db.Column(db.Integer, nullable=True)
@@ -82,6 +72,7 @@ class PracticeSession(db.Model):  ###A specific meal order
 
 
 class Exercise(db.Model): ###the menu items ordered -- "Attributes" problem = all the details about how they are ordered
+    """A specific skill or assignment"""
     __tablename__ = "exercises"
 
     exercise_id = db.Column(db.Integer, autoincrement=True, primary_key=True)

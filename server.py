@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, flash, session
 import jinja2
 from model import Routine, User, Exercise, PracticeSession, db
 from crud import last_two_sessions, get_user_by_id
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 's0m3TH!ng'
@@ -139,12 +140,20 @@ def log_practice_session():
     print(f"date type: {type(date)}")
     print("*********************************************")
 
-    session_min = int(request.form.get("session_minutes"))
+    routine_id=request.form.get("routine_id")
+    routine = Routine.query.filter(Routine.routine_id == routine_id).first()
+
+
+    session_min = int(request.form.get("session_minutes", 0))
     on_instrument_min = request.form.get("on_instrument_min")
+    if not on_instrument_min:
+        on_instrument_min = None
     # print(on_instrument_min)
     # print(type(on_instrument_min))
     off_instrument_min = request.form.get("off_instrument_min")
-    # print(off_instrument_min)
+    if not off_instrument_min:
+        off_instrument_min = None    
+        # print(off_instrument_min)
     # print(type(off_instrument_min))
 
     
@@ -174,7 +183,6 @@ def log_practice_session():
                                            session_enjoyment_level=session_enjoyment,
                                            notes_next_practice=notes_next_practice,
                                            questions_for_teacher=questions_for_teacher,
-                                           exercises_this_session="|".join(exercises_this_session),
                                            user=user,
                                            )
 
@@ -183,30 +191,35 @@ def log_practice_session():
     db.session.refresh(new_practice_session)
 
     for exercise in exercises_this_session:
-       k_variations = []
-       m_variations = []
+        k_variations = []
+        m_variations = []
     
-    for key_var in key_variations:
-        key_ex = key_var.split("|")
-        if key_ex[1] == exercise:
-            k_variations.append(key_ex[0])
+        for key_var in key_variations:
+            key_ex = key_var.split("|")
+            if key_ex[1] == exercise:
+                k_variations.append(key_ex[0])
 
-    for mode in modes:
-        mode_ex = mode.split("|")
-        if mode_ex[1] == exercise:
-            m_variations.append(mode_ex[0])
-    print(m_variations)
+        for mode in modes:
+            mode_ex = mode.split("|")
+            if mode_ex[1] == exercise:
+                m_variations.append(mode_ex[0])
+        # print(m_variations)
 
-    new_exercise = Exercise(ex_title=exercise, 
-                            key_variations="|".join(m_variations),
-                            user=user,
-                            practice_session=new_practice_session
-    )
+        # Check if routine object exists before accessing its attributes
+        # if routine:
+        #     routine.add_exercise(exercise)
 
-    db.session.add(new_exercise)
-    db.session.commit()
+        new_exercise = Exercise(ex_title=exercise, 
+                                key_variations="|".join(k_variations),
+                                mode_variations="|".join(m_variations),
+                                user=user,
+                                practice_session=new_practice_session
+        )
+
+        db.session.add(new_exercise)
+        db.session.commit()
     practice_sessions = last_two_sessions(user.user_id)
-    
+        
 
     return render_template("log.html", 
                         user=user, 

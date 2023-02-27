@@ -13,18 +13,11 @@
                 
             <fieldset>
                 <section>
-                    <!-- <label for="date">*Practice Date:</label> -->
-                    <template>
-                        <div>
-                          <label for="example-datepicker">Choose a date</label>
-                          <b-form-datepicker id="example-datepicker" v-model="value" class="mb-2"></b-form-datepicker>
-                          <p>Value: '{{ value }}'</p>
-                        </div>
-                      </template>
-                        <!-- <input type="datetime" name="date" id="date" required/> -->
-                    <label for="total_session_minutes">*Duration (minutes):</label>
-                    
-                        <input type="number" min="1" max="1440" name="session_minutes" id="session_min" required/>
+
+                    <label for="date">*Practice Date:</label>
+                        <input type="datetime" name="date" id="date" required/>
+                    <label for="session_min">*Duration (minutes):</label>
+                        <input type="number" min="1" max="1440" name="session_min" id="session_min" required/>
                     <p class="small_text">* Required</p>
                 </section>
 
@@ -48,7 +41,7 @@
                         
                         <span class="indent"><label for="key_variation">Keys Practiced</label></span><br>
                         <span class="indent">{% for key in list_of_maj_keys %} 
-                        <input type="checkbox" name="key_variation" value="{{ key }}|{{ exercise }}"><span class="larger_text">&nbsp;{{ key }}&nbsp;</span></input>
+                        <input type="checkbox" name="key_variation" value="{{ key }}|{{ exercise }}"><span class="larger_text">{{ key }}</span></input>
                         {% endfor %}
                         </span>
                         <br>
@@ -149,7 +142,7 @@
 
             {% if session.exercises_this_session %} 
 
-                {% for exercise in session.exercises_this_session.split("|") %}
+                {% for exercise in session.exercises_this_session %}
                 
                 <p>{{ exercise }}</p>
                 
