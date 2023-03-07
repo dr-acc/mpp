@@ -52,13 +52,23 @@
                                 {% for mode in mode_library %}  
                                 <input type="checkbox" value="{{ mode }}|{{ exercise }}" name="mode" class="music_mode_checkboxes" id="{{ mode }}">&nbsp;{{ mode }}&nbsp;</input>
                                 {% endfor %} 
-                            <br><br>
+                            <br>
+                            
+                            <!-- This is a new as of 2/28: -->
+                            <span class="indent">Tempo (bpm)</span>
+                            <span class="indent">
+                                <select name="selectBPM" id="selectBPM">                                     
+                                </select>
+
+                            <!-- As of the <br> tag below, this is the end of the new section 2/28 -->
+                            <br>
                     {% endfor %}
                         </span>
                 </section>
                 <br>
             </p>
                 <section>
+
                 <div class="content">Select all that apply:
                         <p>BPM</p>
                         <p>Direction</p>
@@ -157,4 +167,7 @@
         {% endfor %}
     </div>
 </div>
+
+
+
 {% endblock %}

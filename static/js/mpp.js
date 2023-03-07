@@ -1,14 +1,5 @@
 // <!-- Made this bit of JS thinking I'll need it; or something like it, maybe a jinja version(?) to populate the drop-down list in the form with options; (i.e., to avoid a massive list of <option> tags) -->
-
-        const selectBPM = document.getElementById("selectBPM");
-        let bpms;
-            for (let i = 20; i <= 200; i++) {
-                bpmContents += "<option>" + i + "</option>";
-            }
-
-        selectBPM.innerHTML = bmps;
-
-        // <select name="bpm" id="bmp"></select>
+// removed tempo script to put in base 2/28
 
 
         const collapsible_buttons = document.getElementsByClassName("collapsible");

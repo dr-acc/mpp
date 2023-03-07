@@ -138,7 +138,6 @@ def log_practice_session():
     print("*********************************************")
     print(f"date: {date}")
     print(f"date type: {type(date)}")
-    print("*********************************************")
 
     routine_id=request.form.get("routine_id")
     routine = Routine.query.filter(Routine.routine_id == routine_id).first()
@@ -148,15 +147,12 @@ def log_practice_session():
     on_instrument_min = request.form.get("on_instrument_min")
     if not on_instrument_min:
         on_instrument_min = None
-    # print(on_instrument_min)
-    # print(type(on_instrument_min))
+
     off_instrument_min = request.form.get("off_instrument_min")
     if not off_instrument_min:
         off_instrument_min = None    
-        # print(off_instrument_min)
-    # print(type(off_instrument_min))
 
-    
+
     routine_id = request.form.get("routine_id")
     routine = Routine.query.filter(Routine.routine_id == routine_id).first()
 
